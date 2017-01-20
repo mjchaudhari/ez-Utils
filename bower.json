@@ -1,0 +1,36 @@
+{
+  "name": "ez-utils",
+  "version": "1.0.0",
+  "description": "angularjs 1 utilities",
+  "main": [
+    
+  ],
+  "dependencies": {
+      "angualr-material" :"1.0.4",
+      "ng-file-upload.js" : "11.0.0",
+      "ng-img-crop":"0.3.2",
+      "underscore" : "1.8.3"
+  },
+  "devDependencies": {
+
+  },
+  "moduleType": [
+
+  ],
+  "keywords": [
+    "directives",
+    "utilities"
+  ],
+  "authors": [
+    "Mahesh Chaudhari"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": false
+}
