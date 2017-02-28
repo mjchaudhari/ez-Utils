@@ -1,11 +1,6 @@
 (function() {
   
-  var module ;
-  try {
-        module = angular.module('ezDirectives');;
-    } catch (e) {
-        module = angular.module('ezDirectives', []);
-    }
+  var module = angular.module('ezDirectives');
     
   this.ezinitialsTemplate = [
 //         '<span class="initials-circle" style="background: blueviolet;" >',

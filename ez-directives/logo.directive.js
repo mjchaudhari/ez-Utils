@@ -1,10 +1,5 @@
 (function() {
-  var module = null;
-  try {
-        module = angular.module('ezDirectives');
-    } catch (e) {
-        module = angular.module('ezDirectives', []);
-    }
+  var module = angular.module('ezDirectives');
     this.materialTemplate = [
       '<span>',
         '<img style="height:40px;width:40px" ng-class="[rotate, {orange: doRotate}]" src="./content/images/cp.png" />',

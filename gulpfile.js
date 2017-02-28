@@ -8,10 +8,11 @@ var concat = require('gulp-concat');
 var dest = "./dist/"
 
 var styles =[
-    './**/*.css/'
+    './ez-directives/**/*.css/'
 ]
 var jsFiles =[
-   './**/*.js/'
+   './index.js',
+   './ez-directives/**/*.js/'
 ]
 /** clean up */
 gulp.task('clean', function (cb) {
@@ -23,7 +24,7 @@ gulp.task('clean', function (cb) {
 /** concat */
 gulp.task('styles', function () {
    gulp.src(styles)
-      .pipe(concat('ez-directive.css'))
+      .pipe(concat('ez-directives.css'))
       .pipe(gulp.dest(dest))
 });
 /**

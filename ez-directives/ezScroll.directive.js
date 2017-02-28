@@ -1,12 +1,5 @@
 (function() {
-  
-  var module ;
-  try {
-        module = angular.module('ezDirectives');;
-    } catch (e) {
-        module = angular.module('ezDirectives', []);
-    }
-    
+  var module = angular.module('ezDirectives');  
   this.scrollTemplate = [
 //         '<span class="initials-circle" style="background: blueviolet;" >',
 //             '<span style="color: whitesmoke;margin:0;">{{initials}}</span>',

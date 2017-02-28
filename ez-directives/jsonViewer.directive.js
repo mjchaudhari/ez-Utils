@@ -1,14 +1,5 @@
 (function() {
-  
-  var module = null;
-  try {
-        module = angular.module('ezDirectives');
-    } catch (e) {
-        module = angular.module('ezDirectives', []);
-    }
-
-    
-  
+  var module = angular.module('ezDirectives');
   this.viewerTemplate = [
     '<md-button class="md-icon-button" ng-click="openDialog()"  aria-label="close">',
         '<ng-md-icon icon="view"></ng-md-icon> ',
