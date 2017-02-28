@@ -1,0 +1,9 @@
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+.DS_Store
+.DS_Store?
+./tmpStore
+test-reports/
+.tmp/
+node_modules/

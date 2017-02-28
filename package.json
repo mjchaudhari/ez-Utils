@@ -1,0 +1,16 @@
+{
+  "name": "ez-utils",
+  "version": "1.0.0",
+  "description": "UI Utilities",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-copy": "^1.0.0",
+    "gulp-uglify": "^2.0.1"
+  },
+  "pre-commit": [
+  ]
+}

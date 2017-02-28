@@ -13,7 +13,7 @@
       '<div layout="column" layout-align="center center" ng-click="openThumbnailDialog($event)">',
       '  <div class="thumbnail-card"  ng-class="thumbnailClass"  >',
       //'    <img ng-hide="{{img!=null}}" src ng-src="{{defaultImage}}" class="md-avatar thumbnail-img"  md-click="openThumbnailDialog($event)" /> ',
-      '    <img   src ng-src="{{img||defaultImage}}" class="md-avatar thumbnail-img" ng-class="thumbnailClass"  md-click="openThumbnailDialog($event)" /> ',
+      '    <img src ng-src="{{img||defaultImage}}" class="md-avatar thumbnail-img" ng-class="thumbnailClass"  md-click="openThumbnailDialog($event)" /> ',
       '  </div>',
 //       '  <md-button ng-hide class="md-icon-button" ng-click="openThumbnailDialog($event)">',
 //       '     <i class="material-icons">edit</i>',
@@ -44,13 +44,19 @@
                   '<md-switch ng-model="thumb.isCircle" aria-label="Use circular cropper area:" ng-change="areaChange(thumb.isCircle)" class="md-warn">',
                        'Use square cropper area',
                   '</md-switch>',
-                  '<div layout="column" layout-align="center center" class="crop-area md-whiteframe-1dp">',
-                      '<ng-md-icon icon="camera_alt" size="64" ngf-select ', 
-                          'ng-model="thumb.sourceFile" accept="\'image/*\'"></ng-md-icon> ',
-                      '<img-crop image="thumb.sourceFile | ngfDataUrl" area-type="{{thumb.cropperGuide}}"',
+                  '<div layout="column" layout-align="center center" class="cropArea">',
+                        
+                        '<input type="file"  class="md-fab md-mini" ngf-select=""  ', 
+                            'ng-model="thumb.sourceFile" >',
+
+                        '</input > ',
+                      '<ui-cropper image="thumb.sourceFile|ngfDataUrl" area-type="{{thumb.cropperGuide}}"',
                       '    area-min-size="thumb.cropperMinSize" result-image-size="thumb.resultSize" ',
-                      '    result-image="thumb.croppedDataUrl" >',
-                      '</img-crop>',
+                      '    result-image="thumb.croppedDataUrl" ng-init="croppedDataUrl=\'\'">',
+                      '</ui-cropper>',
+                      
+                    //   '<img-crop image="thumb.sourceFile|ngfDataUrl" area-type="{{thumb.cropperGuide}}" result-image="thumb.croppedDataUrl" >',
+                    //   '</img-crop>',
                       '<h3>Preiew</h3>',
                       '<img src="{{thumb.croppedDataUrl}}" />',
                   '</div>',
@@ -82,7 +88,7 @@
               resultSize : 100,
               cropperGuide : 'circle'
           }
-          $scope.defaultImage = "./content/images/group-default3.png";
+          //$scope.defaultImage = "./images/group-default3.png";
           $scope.thumnailClass="";
           var init = function(){
             
@@ -197,7 +203,4 @@
             
       }}
   ]);//directive ends  
-    
-    
-    
 })();//closure ends
