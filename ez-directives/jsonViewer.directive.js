@@ -6,9 +6,7 @@
     '</md-button>',
     ].join('\n');
 
-    
     this.viewerDialogTemplate = [
-       
           '<md-dialog flex="65" style="height:80vh" aria-label="List dialog">',
              '<md-dialog-content >',
                 '<md-toolbar md-scroll-shrink="false">',
@@ -77,15 +75,8 @@
                 }
               }
           }
-
-          
           init();
-          
         }]//controller ends
-            
       }}
   ]);//directive ends  
-    
-    
-    
 })();//closure ends

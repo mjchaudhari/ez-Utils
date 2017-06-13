@@ -74,62 +74,46 @@
 })();//closure ends
 (function() {
   
-  var module = angular.module('ezDirectives');
+  var module = null;
+  try {
+        module = angular.module('ezDirectives');
+    } catch (e) {
+        module = angular.module('ezDirectives', []);
+    }
+
+    
+  
   this.ezImageUploadTemplate = [
       '<div layout="column" layout-align="center center" ng-click="openThumbnailDialog($event)">',
       '  <div class="thumbnail-card"  ng-class="thumbnailClass"  >',
-      //'    <img ng-hide="{{img!=null}}" src ng-src="{{defaultImage}}" class="md-avatar thumbnail-img"  md-click="openThumbnailDialog($event)" /> ',
       '    <img src ng-src="{{img||defaultImage}}" class="md-avatar thumbnail-img" ng-class="thumbnailClass"  md-click="openThumbnailDialog($event)" /> ',
       '  </div>',
-//       '  <md-button ng-hide class="md-icon-button" ng-click="openThumbnailDialog($event)">',
-//       '     <i class="material-icons">edit</i>',
-//       '  </md-button>',
+      '<script type="text/ng-template" id="/modalwindow.tpl.html"><div class="my-modal-dialog {{size ? \'modal-\' + size : \'\'}}"><div class="modal-content full-page-modal" uib-modal-transclude></div></div></script>'  ,
       '</div>'
-        
+      
     ].join('\n');
 
     
     this.ezImageUploadModalTemplate = [
-          '<md-dialog flex="100" style="height:100vh" aria-label="List dialog">',
-             '<md-dialog-content>',
-                '<md-toolbar md-scroll-shrink="false">',
-                  '<div class="md-toolbar-tools">',
-                      '<md-button class="md-icon-button" ng-click="cancelDialog()"  aria-label="close">',
-                        '<ng-md-icon icon="cancel"></ng-md-icon> ',
-                      '</md-button>',
-                      '<span flex>{{title}}</span>',
-                      '<div ng-show="uploading" class="" layout="row" layout-align="end">',
-                          '<img style="height:40px;width:40px" class="rotating" src="./content/images/cp.png" />',
-                      '</div>',
-                      '<md-button class="md-icon-button" ng-click="closeDialog()"  aria-label="close">',
-                        '<ng-md-icon icon="save"></ng-md-icon> ',
-                      '</md-button>',
-                  '</div>',
-                '</md-toolbar>',
-                '<div layout-padding>',
-                  '<md-switch ng-model="thumb.isCircle" aria-label="Use circular cropper area:" ng-change="areaChange(thumb.isCircle)" class="md-warn">',
-                       'Use square cropper area',
-                  '</md-switch>',
-                  '<div layout="column" layout-align="center center" class="cropArea">',
-                        
-                        '<input type="file"  class="md-fab md-mini" ngf-select=""  ', 
-                            'ng-model="thumb.sourceFile" >',
-
-                        '</input > ',
-                      '<ui-cropper image="thumb.sourceFile|ngfDataUrl" area-type="{{thumb.cropperGuide}}"',
-                      '    area-min-size="thumb.cropperMinSize" result-image-size="thumb.resultSize" ',
-                      '    result-image="thumb.croppedDataUrl" ng-init="croppedDataUrl=\'\'">',
-                      '</ui-cropper>',
-                      
-                    //   '<img-crop image="thumb.sourceFile|ngfDataUrl" area-type="{{thumb.cropperGuide}}" result-image="thumb.croppedDataUrl" >',
-                    //   '</img-crop>',
-                      '<h3>Preiew</h3>',
-                      '<img src="{{thumb.croppedDataUrl}}" />',
-                  '</div>',
-
-              '</div>',
-             '</md-dialog-content>',
-         '</md-dialog>',
+        '<div class="height-stretch">',
+        '    <nav class="navbar navbar-inverse navbar-fixed-top fixed-top sticky-top bg-primary">',
+        '        <div class="navbar-header">',
+        '            <a class="navbar-brand" href="">{{title}}</a>',
+        '            <button class="float-right navbar-toggler" type="button" ng-click="cancelDialog()"><span class="material-icons">cancel</span></button>',
+        '            <button ng-if="thumb.sourceFile" class="float-right navbar-toggler" type="button" ng-click="closeDialog()" ><span class="material-icons">save</span> </button>',
+        '        </div>',
+        '    </nav>',
+        '    <div class="" role="main">',
+        '        <div class="div-center cropArea">',
+        '            <i class="material-icons-lg" ngf-select="" ng-model="thumb.sourceFile" >file_upload </i> ',
+        '            <h5 ng-if="thumb.sourceFile==null">Select Image</h5>',
+        '            <ui-cropper ng-if="thumb.sourceFile" image="thumb.sourceFile|ngfDataUrl" area-type="{{thumb.cropperGuide}}" area-min-size="thumb.cropperMinSize" result-image-size="thumb.resultSize" ',
+        '                result-image="thumb.croppedDataUrl" ng-init="croppedDataUrl=\'\'">',
+        '            </ui-cropper>',
+                    
+        '        </div>',
+        '   </div>',
+        '</div>',
     ].join('\n');
 
     
@@ -145,14 +129,14 @@
           thumbnailClass:"=?"
         },
         //controller start
-        controller: ["$scope","Upload",'$mdDialog', function ($scope, Upload,$mdDialog) {
+        controller: ["$scope","Upload",'$uibModal', function ($scope, Upload, $uibModal) {
           var originalImg = $scope.img;
           var thumb = {
               croppedDataUrl:'',
               sourceFile:'',
               cropperMinSize : 80,
               resultSize : 100,
-              cropperGuide : 'circle'
+              cropperGuide : 'square'
           }
           //$scope.defaultImage = "./images/group-default3.png";
           $scope.thumnailClass="";
@@ -220,48 +204,44 @@
                 $scope.thumbnailClass = "";
               }
           });
-          
           $scope.openThumbnailDialog = function($event){
-               var parentEl = angular.element(document.body);
-               $mdDialog.show({
-                 parent: parentEl,
-                 targetEvent: $event,
-                 template:ezImageUploadModalTemplate,
-                 locals: {
-                   items: $scope.items,
-                   thumb : $scope.thumb,
-                 },
-                 controller: DialogController
-              }).then(function(dataUrl){
-                $scope.img = dataUrl;
-              },function(){
+              var memberModal = $uibModal.open({
+                // ariaLabelledBy: 'modal-title',
+                // ariaDescribedBy: 'modal-body',
+                windowTemplateUrl:"/modalwindow.tpl.html",
+                template : ezImageUploadModalTemplate,
+                // windowClass:"my-modal-dialog",
+                // windowTopClass : "full-page-modal",
+                controller: DialogController,
+                size:'lg',
+                resolve:{
+                    options: function(){
+                        return $scope.options;
+                    }
+                }
+            });
+            memberModal.result
+            .then(function(data){
+                $scope.img = data;
+            }, function(){
+                //cancelled
+            });
 
-              });
-              
-              function DialogController($scope, $mdDialog, items, Upload) {
-                $scope.items = items;
+            function DialogController($scope, $uibModalInstance) {
                 $scope.sourceFile = "";
-                scope = $scope;
+                
                 $scope.thumb = thumb;
                 $scope.openSelectFile = function(dataUrl ){
                     console.info(dataUrl);
                 }
-                $scope.areaChange=function (model){
-                  if(!model){
-                    $scope.thumb.cropperGuide = "circle";
-                  }else{
-                    $scope.thumb.cropperGuide = "square";
-                  }
-                }
                 $scope.closeDialog = function() {
-                  $mdDialog.hide($scope.thumb.croppedDataUrl);
+                  $uibModalInstance.close($scope.thumb.croppedDataUrl);
                 }
                 $scope.cancelDialog = function() {
-                  $mdDialog.cancel();
+                  $uibModalInstance.dismiss();
                 }
               }
           }
-
           
           init();
           
@@ -810,9 +790,7 @@
     '</md-button>',
     ].join('\n');
 
-    
     this.viewerDialogTemplate = [
-       
           '<md-dialog flex="65" style="height:80vh" aria-label="List dialog">',
              '<md-dialog-content >',
                 '<md-toolbar md-scroll-shrink="false">',
@@ -881,17 +859,10 @@
                 }
               }
           }
-
-          
           init();
-          
         }]//controller ends
-            
       }}
   ]);//directive ends  
-    
-    
-    
 })();//closure ends
 (function() {
   var module = angular.module('ezDirectives');
